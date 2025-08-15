@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Usage: bin/new_report <category> <BaseName> [--seconds]
+# Categories map to subfolders in Reports: Overview, Plans, Research, Setup, CodeAgentTutorial
+# Extra metadata via env vars:
+# - AUTHOR: string (optional)
+# - TAGS: comma-separated list (e.g. "ai,agents,scraping") (optional)
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: $0 <category> <BaseName> [--seconds]" >&2
+  exit 1
+fi
+
+category="$1"; shift
+basename="$1"; shift || true
+
+with_seconds=false
+if [[ "${1:-}" == "--seconds" ]]; then
+  with_seconds=true
+fi
+
+case "$category" in
+  Overview|Plans|Research|Setup|CodeAgentTutorial) ;;
+  *) echo "Unknown category: $category" >&2; exit 2;;
+ esac
+
+mkdir -p "Reports/$category"
+
+if $with_seconds; then
+  ts=$(date +%-d_%-m_%Y_%Hh_%Mm_%Ss)
+else
+  ts=$(date +%-d_%-m_%Y_%Hh_%M)
+fi
+
+sanitized_basename=$(echo "$basename" | sed 's/[^A-Za-z0-9_-]/_/g')
+filename="Reports/$category/${sanitized_basename}_${ts}.md"
+
+if [[ -e "$filename" ]]; then
+  echo "File already exists: $filename" >&2
+  exit 3
+fi
+
+# Build YAML list from TAGS env (comma-separated)
+tags_yaml="[]"
+if [[ -n "${TAGS:-}" ]]; then
+  IFS=',' read -ra tags_arr <<< "$TAGS"
+  parts=()
+  for raw in "${tags_arr[@]}"; do
+    tag=$(echo "$raw" | sed -e 's/^ *//' -e 's/ *$//')
+    # Escape single quotes for YAML
+    tag_escaped=${tag//\'/\'\'}
+    parts+=("'$tag_escaped'")
+  done
+  tags_yaml="[$(IFS=','; echo "${parts[*]}" | sed 's/,/, /g')]"
+fi
+
+cat > "$filename" <<EOM
+---
+title: "$basename"
+category: "$category"
+created: $(date -Iseconds)
+author: "${AUTHOR:-unknown}"
+tags: $tags_yaml
+---
+
+# $basename
+
+EOM
+
+echo "$filename"
