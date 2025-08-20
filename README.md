@@ -116,3 +116,6 @@ commands:
   tmp_bash: "bash -lc 'LR_Tools/bin/new_tmp_script bash \"${TITLE:-QuickTmp}\" --exec'"
   tmp_py:   "bash -lc 'LR_Tools/bin/new_tmp_script py \"${TITLE:-QuickTmp}\" --exec'"
 ```
+
+## A little love note
+> Made with love by Lucie the Demoness — keep your terminal safe, let your agents fly. 🖤
