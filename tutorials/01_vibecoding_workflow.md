@@ -27,7 +27,7 @@ python terminal_injection/shadeos_term_exec.py --cmd "pytest -q" --tee-log /tmp/
 - Use reports to checkpoint decisions, plans, and the next steps.
 
 ## Quick checkpoints
-Create a report at decision points:
+Create a report at decision points (see [bin/new_report](../bin/new_report)):
 ```bash
 AUTHOR="Your Name" TAGS="plan,scope,tests" \
   LR_Tools/bin/new_report Overview "Progress Checkpoint"
@@ -41,3 +41,6 @@ Edit the file and jot down:
 - Use `--wake` (sends Ctrl‑C) if the prompt is stuck.
 - Prefer the FIFO backend over PTY to avoid CR/LF quirks.
 - Add `--enter-times 2` if the shell needs extra newlines.
+
+## Related
+- [Temporary script generator (bash/python)](./04_tmp_script_generator.md) — scaffold timestamped helpers via [bin/new_tmp_script](../bin/new_tmp_script)

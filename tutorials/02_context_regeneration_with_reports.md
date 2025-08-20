@@ -8,6 +8,7 @@ Reports are more than notes — they are structured context anchors. Each report
 - Humans keep the narrative coherent across days and branches.
 
 ## Create reports (timestamped)
+Use the report generator (see [bin/new_report](../bin/new_report)):
 ```bash
 # Minimal
 LR_Tools/bin/new_report Overview "Daily Checkpoint"
@@ -34,3 +35,6 @@ AUTHOR="You" TAGS="scope,tests,plan" LR_Tools/bin/new_report Plans "Detector Roa
 - Prefer one topic per report; create another rather than overloading.
 - Use consistent categories (`Overview`, `Plans`, `Research`, `Setup`, `CodeAgentTutorial`).
 - Keep titles short; tags power search and filtering.
+
+## Related
+- [Temporary script generator (bash/python)](./04_tmp_script_generator.md) — create timestamped helpers under `scripts/tmp/`

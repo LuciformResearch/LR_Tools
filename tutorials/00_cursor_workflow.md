@@ -34,7 +34,7 @@ Tips:
 - Use `--recipe unit-fast` or `--recipe all` for common flows.
 
 ## Capture context with reports
-Create a timestamped report when you reach a checkpoint:
+Create a timestamped report when you reach a checkpoint (see [bin/new_report](../bin/new_report)):
 ```bash
 AUTHOR="Your Name" TAGS="plan,scope,tests" LR_Tools/bin/new_report Overview "Progress Checkpoint"
 ```
@@ -48,7 +48,8 @@ When returning to the project, skim the latest reports (sorted by timestamp). Ag
 - List `Reports/**.md`, pick the most recent files, parse the frontmatter, and synthesize a working brief.
 - Pull relevant commands from the notes to restart flows (`pytest`, smoke checks, sync steps).
 
-## See also
-- `01_vibecoding_workflow.md`
-- `02_context_regeneration_with_reports.md`
-- `03_makefile_and_recipes.md`
+## Related
+- [Vibecoding workflow](./01_vibecoding_workflow.md)
+- [Regenerate context with reports](./02_context_regeneration_with_reports.md)
+- [Makefile targets and recipes](./03_makefile_and_recipes.md)
+- [Temporary script generator (bash/python)](./04_tmp_script_generator.md) — quickly scaffold timestamped helpers via [bin/new_tmp_script](../bin/new_tmp_script)
