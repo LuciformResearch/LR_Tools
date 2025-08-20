@@ -68,6 +68,7 @@ LR_Tools/bin/new_tmp_script py "Probe something" --exec
 - [Regenerate context with reports](./tutorials/02_context_regeneration_with_reports.md)
 - [Makefile targets and recipes](./tutorials/03_makefile_and_recipes.md)
 - [Temporary script generator (bash/python)](./tutorials/04_tmp_script_generator.md)
+ - [Quickstart in 60 seconds](./tutorials/05_quickstart_in_60s.md)
 
 ## Ecosystem
 Pairs nicely with LR Package Manager (lr‑pm) for manifests, lockfiles, and submodule helpers.
@@ -77,3 +78,36 @@ Pairs nicely with LR Package Manager (lr‑pm) for manifests, lockfiles, and sub
 ## Example reports
 Public examples of timestamped reports showcasing the workflow:
 - Scrap IA Reports: https://github.com/L-Defraiteur/scrap-ia-reports
+
+## Who is this for?
+- Developers and teams orchestrating commands via agents while keeping terminal control
+- Anyone wanting durable, searchable context via timestamped Markdown
+- Python 3.10+ recommended
+
+## Quick reference
+- Listener: `python shadeos_start_listener.py`
+- Injector: `python terminal_injection/shadeos_term_exec.py --cmd "…" [--wake --tee-log …]`
+- New report: `LR_Tools/bin/new_report <Category> "Title" [--seconds]`
+- New tmp script: `LR_Tools/bin/new_tmp_script <bash|py> "Title" --exec`
+- Manifest aliases: `./bin/lr pm run tmp_bash` or `TITLE="X" ./bin/lr pm run tmp_py`
+
+## FIFO flow (ASCII)
+```
+[Agent/Script] --(inject cmd)--> [FIFO] --> [Listener] --> [TTY + Logs]
+                                 ^                          |
+                                 |                          v
+                              (recipes)               Reports / scripts/tmp
+```
+
+## Troubleshooting
+- Prompt stuck: add `--wake` to injector (sends Ctrl‑C)
+- No FIFO: ensure the listener is running (shows FIFO path)
+- Permission denied on tmp script: use `--exec` or `chmod +x`
+- Timestamps collide: generator uses seconds; titles are sanitized
+
+## Manifest snippet
+```yaml
+commands:
+  tmp_bash: "bash -lc 'LR_Tools/bin/new_tmp_script bash \"${TITLE:-QuickTmp}\" --exec'"
+  tmp_py:   "bash -lc 'LR_Tools/bin/new_tmp_script py \"${TITLE:-QuickTmp}\" --exec'"
+```
