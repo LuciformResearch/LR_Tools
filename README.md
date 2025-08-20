@@ -1,48 +1,75 @@
-# LR_Tools — Luciform Research Tools
+# LR Tools (lr-tools)
 
-Outils utilitaires et tutoriels pour nos pipelines (terminal injection FIFO, scripts bin/install), regroupés sous un même toit.
+Public subset of LR_Tools: context‑regeneration workflow, terminal FIFO listener/executor, and helper scripts.
 
-## Contenu
+Built for context flow: alongside the FIFO listener, you generate timestamped Markdown reports (with YAML frontmatter) to capture decisions and next steps. On a fresh session, humans and agents can quickly regenerate working context by skimming the latest reports.
 
-- `bin/`
-  - `new_report`: générateur rapide de fichier Markdown avec frontmatter (date/titre). Exemple:
-    ```bash
-    LR_Tools/bin/new_report "Mon Rapport" Reports/Overview
-    ```
-- `install/`
-  - `install_cloudflare_warp.sh`, `install_cloudflare_warp2.sh`: scripts d’installation Cloudflare WARP (réseau privé sécurisé).
-- `terminal_injection/`
-  - `shadeos_term_listener.py`: listener FIFO contrôlant un terminal (écrit l’état dans `~/.shadeos_listener.json`).
-  - `shadeos_term_exec.py`: injecteur qui envoie des commandes dans la FIFO.
-- `tutorials/`
-  - Guides d’utilisation (E2E listener FIFO, frontmatter, Makefile NewReport, etc.).
+- `shadeos_start_listener.py` — zero-config launcher for terminal FIFO listener
+- `terminal_injection/shadeos_term_listener.py` — robust FIFO-based command executor mirroring to TTY
+- `terminal_injection/shadeos_term_exec.py` — send commands to an existing terminal via FIFO, tmux, or PTY
 
-## Démarrage rapide — Terminal injection FIFO
+Apache-2.0. See `LICENSE`.
 
-1) Démarrer le listener (dans le terminal à contrôler):
+## Table of contents
+- [Quickstart](#quickstart)
+- [Usage](#usage)
+- [Tutorials](#tutorials)
+- [Ecosystem](#ecosystem)
+- [Example reports](#example-reports)
+
+## Quickstart
+
+### Install
+
+Local editable (dev):
 ```bash
-python LR_Tools/shadeos_start_listener.py
-# Optionnel: FIFO custom
-SHADEOS_FIFO=/tmp/mon_fifo python LR_Tools/shadeos_start_listener.py
-```
-2) Envoyer une commande depuis un autre terminal ou un agent:
-```bash
-python LR_Tools/terminal_injection/shadeos_term_exec.py \
-  --fifo /tmp/shadeos_cmd.fifo \
-  --cmd "echo 'HELLO $(date -Iseconds)'"
-```
-3) Conseils (si prompt collé):
-```bash
-python LR_Tools/terminal_injection/shadeos_term_exec.py \
-  --fifo /tmp/shadeos_cmd.fifo \
-  --wake \
-  --enter-times 2 \
-  --cmd "echo 'HELLO'"
+pip install -e .
 ```
 
-## Notes d’architecture
-- `shadeos_start_listener.py` détecte dynamiquement le chemin de `LR_Tools` et du listener (ou via `SHADEOS_TOOLS_DIR`).
-- Pas de secrets dans ce repo.
+Via pipx (user-level):
+```bash
+pipx install .
+```
 
-## Licence
-Voir `LICENSE` (propriétaire Luciform Research; usage public interdit sans pacte de collaboration écrit).
+### Usage
+
+Start the FIFO listener in the terminal you want to control:
+```bash
+python shadeos_start_listener.py
+```
+
+Send a command from another process:
+```bash
+python terminal_injection/shadeos_term_exec.py --cmd "echo HELLO"
+```
+
+Advanced (tmux, PID, wake, logs):
+```bash
+python terminal_injection/shadeos_term_exec.py --recipe unit-fast --tee-log /tmp/shadeos.log --wake
+```
+
+Generate a new report with frontmatter:
+```bash
+LR_Tools/bin/new_report Overview "My First Report"  # creates Reports/Overview/My_First_Report_<timestamp>.md
+```
+
+Environment variables:
+- `SHADEOS_FIFO`: FIFO path (default `/tmp/shadeos_cmd.fifo`)
+- `SHADEOS_TOOLS_DIR`: override tools dir auto-detection
+
+## Tutorials
+- `tutorials/00_cursor_workflow.md`
+- `tutorials/01_vibecoding_workflow.md`
+- `tutorials/02_context_regeneration_with_reports.md`
+- `tutorials/03_makefile_and_recipes.md`
+
+## Ecosystem
+LR Tools works standalone, but pairs nicely with the package manager:
+
+- LR Package Manager (lr-pm): manifest/lock + PYTHONPATH wiring and submodule helpers.
+  - Key commands: `lr pm init`, `lr pm info`, `lr pm lock`, `lr pm sync --apply`, `lr pm run <alias>`
+
+## Example reports
+See a public collection of timestamped reports showcasing the workflow:
+
+- Scrap IA Reports (this repo’s `Reports/` folder)
