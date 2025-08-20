@@ -23,8 +23,8 @@ python shadeos_start_listener.py
 ```
 You should see READY and the FIFO path (default `/tmp/shadeos_cmd.fifo`). Leave this terminal open.
 
-## Send commands from Cursor
-In your coding session, ask your assistant to inject commands via the injector:
+## Send commands from Cursor (or any agent/tool)
+From another process (Cursor, script, CI), inject commands via the injector:
 ```bash
 python terminal_injection/shadeos_term_exec.py --cmd "pytest -q" --tee-log /tmp/session.log --wake
 ```

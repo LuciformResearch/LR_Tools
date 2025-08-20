@@ -8,6 +8,11 @@ Human-friendly utilities for fast, reliable human+agent workflows:
 
 Apache-2.0. See `LICENSE`.
 
+## Intended usage (human vs agent)
+- Human anchors the session by running the listener in a visible terminal.
+- Agents/assistants (Cursor, scripts, CI, other tooling) invoke the injector and generators (`new_report`, `new_tmp_script`).
+- All commands are plain CLI: they work from any process, not tied to a specific IDE.
+
 ## What’s inside
 - [shadeos_start_listener.py](./shadeos_start_listener.py) — zero‑config launcher for the FIFO terminal listener
 - [terminal_injection/shadeos_term_listener.py](./terminal_injection/shadeos_term_listener.py) — executes commands from a FIFO, mirrors to TTY
