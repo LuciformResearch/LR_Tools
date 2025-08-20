@@ -1,4 +1,5 @@
-# LR Tools (lr-tools)
+# LR Tools (lr-tools)  
+![License](https://img.shields.io/badge/license-Apache--2.0-blue) ![Python](https://img.shields.io/badge/python-3.10%2B-brightgreen)
 
 Human-friendly utilities for fast, reliable human+agent workflows:
 - A terminal FIFO listener/executor to run commands safely from agents without hijacking your shell.
@@ -48,7 +49,7 @@ LR_Tools/bin/new_report Overview "My First Report"
 # → Reports/Overview/My_First_Report_<timestamp>.md
 ```
 
-### Create a timestamped tmp script
+### Create a timestamped tmp script (bash/python)
 ```bash
 # Bash
 LR_Tools/bin/new_tmp_script bash "Quick helper" --exec
@@ -66,6 +67,7 @@ LR_Tools/bin/new_tmp_script py "Probe something" --exec
 - [Vibecoding workflow](./tutorials/01_vibecoding_workflow.md)
 - [Regenerate context with reports](./tutorials/02_context_regeneration_with_reports.md)
 - [Makefile targets and recipes](./tutorials/03_makefile_and_recipes.md)
+- [Temporary script generator (bash/python)](./tutorials/04_tmp_script_generator.md)
 
 ## Ecosystem
 Pairs nicely with LR Package Manager (lr‑pm) for manifests, lockfiles, and submodule helpers.
