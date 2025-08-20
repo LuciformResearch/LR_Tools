@@ -12,6 +12,7 @@ Apache-2.0. See `LICENSE`.
 - Human anchors the session by running the listener in a visible terminal.
 - Agents/assistants (Cursor, scripts, CI, other tooling) invoke the injector and generators (`new_report`, `new_tmp_script`).
 - All commands are plain CLI: they work from any process, not tied to a specific IDE.
+ - Note: the FIFO listener is for running and observing commands; agents should call generators (reports/tmp scripts) directly, not via the FIFO.
 
 ## What’s inside
 - [shadeos_start_listener.py](./shadeos_start_listener.py) — zero‑config launcher for the FIFO terminal listener
