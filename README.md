@@ -1,75 +1,75 @@
 # LR Tools (lr-tools)
 
-Public subset of LR_Tools: context‑regeneration workflow, terminal FIFO listener/executor, and helper scripts.
-
-Built for context flow: alongside the FIFO listener, you generate timestamped Markdown reports (with YAML frontmatter) to capture decisions and next steps. On a fresh session, humans and agents can quickly regenerate working context by skimming the latest reports.
-
-- `shadeos_start_listener.py` — zero-config launcher for terminal FIFO listener
-- `terminal_injection/shadeos_term_listener.py` — robust FIFO-based command executor mirroring to TTY
-- `terminal_injection/shadeos_term_exec.py` — send commands to an existing terminal via FIFO, tmux, or PTY
+Human-friendly utilities for fast, reliable human+agent workflows:
+- A terminal FIFO listener/executor to run commands safely from agents without hijacking your shell.
+- Timestamped Markdown reports with YAML frontmatter to keep a durable narrative across sessions.
+- Handy generators and recipes to keep momentum (Make targets, tmp script generator).
 
 Apache-2.0. See `LICENSE`.
 
-## Table of contents
-- [Quickstart](#quickstart)
-- [Usage](#usage)
-- [Tutorials](#tutorials)
-- [Ecosystem](#ecosystem)
-- [Example reports](#example-reports)
+## What’s inside
+- `shadeos_start_listener.py` — zero‑config launcher for the FIFO terminal listener
+- `terminal_injection/shadeos_term_listener.py` — executes commands from a FIFO, mirrors to TTY
+- `terminal_injection/shadeos_term_exec.py` — injector (FIFO/tmux/PTY), with recipes and logging
+- `bin/new_report` — generate timestamped Markdown reports with frontmatter
+- `bin/new_tmp_script` — generate timestamped bash or python scripts under `scripts/tmp/`
+- `tutorials/` — concise guides (Cursor dual‑channel, vibecoding, context regeneration, Make recipes)
 
 ## Quickstart
 
 ### Install
-
 Local editable (dev):
 ```bash
 pip install -e .
 ```
 
-Via pipx (user-level):
+Via pipx (user‑level):
 ```bash
 pipx install .
 ```
 
-### Usage
-
-Start the FIFO listener in the terminal you want to control:
+### Run the listener
+Start the listener in the terminal you want to observe:
 ```bash
 python shadeos_start_listener.py
 ```
+You should see READY and the FIFO path (default `/tmp/shadeos_cmd.fifo`). Leave this terminal open.
 
-Send a command from another process:
+### Send a command (from another process)
 ```bash
-python terminal_injection/shadeos_term_exec.py --cmd "echo HELLO"
+python terminal_injection/shadeos_term_exec.py --cmd "echo HELLO" --tee-log /tmp/shadeos.log --wake
+```
+- `--wake` sends Ctrl‑C first to recover a stuck prompt
+- `--recipe unit-fast` runs a predefined command bundle
+
+### Create a timestamped report
+```bash
+LR_Tools/bin/new_report Overview "My First Report"
+# → Reports/Overview/My_First_Report_<timestamp>.md
 ```
 
-Advanced (tmux, PID, wake, logs):
+### Create a timestamped tmp script
 ```bash
-python terminal_injection/shadeos_term_exec.py --recipe unit-fast --tee-log /tmp/shadeos.log --wake
+# Bash
+LR_Tools/bin/new_tmp_script bash "Quick helper" --exec
+# Python
+LR_Tools/bin/new_tmp_script py "Probe something" --exec
+# Files land in scripts/tmp/<Title>_<YYYYMMDD-HHMMSS>.{sh,py}
 ```
 
-Generate a new report with frontmatter:
-```bash
-LR_Tools/bin/new_report Overview "My First Report"  # creates Reports/Overview/My_First_Report_<timestamp>.md
-```
-
-Environment variables:
-- `SHADEOS_FIFO`: FIFO path (default `/tmp/shadeos_cmd.fifo`)
-- `SHADEOS_TOOLS_DIR`: override tools dir auto-detection
+### Environment variables
+- `SHADEOS_FIFO` — FIFO path for the listener (default `/tmp/shadeos_cmd.fifo`)
+- `SHADEOS_TOOLS_DIR` — override autodetection of tools dir
 
 ## Tutorials
-- `tutorials/00_cursor_workflow.md`
-- `tutorials/01_vibecoding_workflow.md`
-- `tutorials/02_context_regeneration_with_reports.md`
-- `tutorials/03_makefile_and_recipes.md`
+- `tutorials/00_cursor_workflow.md` — Cursor dual‑channel workflow
+- `tutorials/01_vibecoding_workflow.md` — keep the vibe with short loops
+- `tutorials/02_context_regeneration_with_reports.md` — rebuild context from reports
+- `tutorials/03_makefile_and_recipes.md` — small, repeatable command recipes
 
 ## Ecosystem
-LR Tools works standalone, but pairs nicely with the package manager:
-
-- LR Package Manager (lr-pm): manifest/lock + PYTHONPATH wiring and submodule helpers.
-  - Key commands: `lr pm init`, `lr pm info`, `lr pm lock`, `lr pm sync --apply`, `lr pm run <alias>`
+Pairs nicely with LR Package Manager (lr‑pm) for manifests, lockfiles, and submodule helpers.
+- Typical commands: `lr pm init`, `lr pm info`, `lr pm lock`, `lr pm sync --apply`, `lr pm run <alias>`
 
 ## Example reports
-See a public collection of timestamped reports showcasing the workflow:
-
-- Scrap IA Reports (this repo’s `Reports/` folder)
+See `Reports/` in this project for timestamped examples of the workflow in practice.
