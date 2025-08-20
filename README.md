@@ -46,7 +46,7 @@ python terminal_injection/shadeos_term_exec.py --cmd "echo HELLO" --tee-log /tmp
 ### Create a timestamped report
 ```bash
 LR_Tools/bin/new_report Overview "My First Report"
-# → Reports/Overview/My_First_Report_<timestamp>.md
+# → Reports/Overview/My_First_Report_<day>_<month>_<year>_<Hh>_<Mm>_<Ss>.md
 ```
 
 ### Create a timestamped tmp script (bash/python)
@@ -55,7 +55,7 @@ LR_Tools/bin/new_report Overview "My First Report"
 LR_Tools/bin/new_tmp_script bash "Quick helper" --exec
 # Python
 LR_Tools/bin/new_tmp_script py "Probe something" --exec
-# Files land in scripts/tmp/<Title>_<YYYYMMDD-HHMMSS>.{sh,py}
+# Files land in scripts/tmp/<Title>_<day>_<month>_<year>_<Hh>_<Mm>_<Ss>.{sh,py}
 ```
 
 ### Environment variables

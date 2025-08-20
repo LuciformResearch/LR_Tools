@@ -14,9 +14,9 @@ LR_Tools/bin/new_tmp_script bash "My quick helper" --exec
 # Python script
 LR_Tools/bin/new_tmp_script py "Probe provider health" --exec
 ```
-Output examples:
-- `scripts/tmp/My_quick_helper_20250821-000536.sh`
-- `scripts/tmp/Probe_provider_health_20250821-000536.py`
+Output examples (human‑readable timestamp like reports):
+- `scripts/tmp/My_quick_helper_21_8_2025_00h_05m_36s.sh`
+- `scripts/tmp/Probe_provider_health_21_8_2025_00h_05m_36s.py`
 
 ## Notes
 - `--exec` makes the new file executable right away

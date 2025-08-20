@@ -29,8 +29,8 @@ case "$kind" in
 esac
 
 mkdir -p scripts/tmp
-# Timestamp with seconds for uniqueness
-TS=$(date +%Y%m%d-%H%M%S)
+# Timestamp with seconds for uniqueness (human‑readable, aligned with new_report)
+TS=$(date +%-d_%-m_%Y_%Hh_%Mm_%Ss)
 # Sanitize title to safe filename
 BASE=$(echo "$TITLE" | sed 's/[^A-Za-z0-9_-]/_/g')
 F="scripts/tmp/${BASE}_${TS}.${ext}"
