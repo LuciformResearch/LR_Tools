@@ -8,12 +8,12 @@ Human-friendly utilities for fast, reliable human+agent workflows:
 Apache-2.0. See `LICENSE`.
 
 ## What’s inside
-- `shadeos_start_listener.py` — zero‑config launcher for the FIFO terminal listener
-- `terminal_injection/shadeos_term_listener.py` — executes commands from a FIFO, mirrors to TTY
-- `terminal_injection/shadeos_term_exec.py` — injector (FIFO/tmux/PTY), with recipes and logging
-- `bin/new_report` — generate timestamped Markdown reports with frontmatter
-- `bin/new_tmp_script` — generate timestamped bash or python scripts under `scripts/tmp/`
-- `tutorials/` — concise guides (Cursor dual‑channel, vibecoding, context regeneration, Make recipes)
+- [shadeos_start_listener.py](./shadeos_start_listener.py) — zero‑config launcher for the FIFO terminal listener
+- [terminal_injection/shadeos_term_listener.py](./terminal_injection/shadeos_term_listener.py) — executes commands from a FIFO, mirrors to TTY
+- [terminal_injection/shadeos_term_exec.py](./terminal_injection/shadeos_term_exec.py) — injector (FIFO/tmux/PTY), with recipes and logging
+- [bin/new_report](./bin/new_report) — generate timestamped Markdown reports with frontmatter
+- [bin/new_tmp_script](./bin/new_tmp_script) — generate timestamped bash or python scripts under `scripts/tmp/`
+- [tutorials/](./tutorials) — concise guides (Cursor dual‑channel, vibecoding, context regeneration, Make recipes)
 
 ## Quickstart
 
@@ -62,14 +62,16 @@ LR_Tools/bin/new_tmp_script py "Probe something" --exec
 - `SHADEOS_TOOLS_DIR` — override autodetection of tools dir
 
 ## Tutorials
-- `tutorials/00_cursor_workflow.md` — Cursor dual‑channel workflow
-- `tutorials/01_vibecoding_workflow.md` — keep the vibe with short loops
-- `tutorials/02_context_regeneration_with_reports.md` — rebuild context from reports
-- `tutorials/03_makefile_and_recipes.md` — small, repeatable command recipes
+- [Cursor dual‑channel workflow](./tutorials/00_cursor_workflow.md)
+- [Vibecoding workflow](./tutorials/01_vibecoding_workflow.md)
+- [Regenerate context with reports](./tutorials/02_context_regeneration_with_reports.md)
+- [Makefile targets and recipes](./tutorials/03_makefile_and_recipes.md)
 
 ## Ecosystem
 Pairs nicely with LR Package Manager (lr‑pm) for manifests, lockfiles, and submodule helpers.
+- Repo (release): https://github.com/L-Defraiteur/lr-package-manager
 - Typical commands: `lr pm init`, `lr pm info`, `lr pm lock`, `lr pm sync --apply`, `lr pm run <alias>`
 
 ## Example reports
-See `Reports/` in this project for timestamped examples of the workflow in practice.
+Public examples of timestamped reports showcasing the workflow:
+- Scrap IA Reports: https://github.com/L-Defraiteur/scrap-ia-reports
