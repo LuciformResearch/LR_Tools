@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Create a timestamped temporary script under scripts/tmp/ (bash or python)
+# Usage:
+#   LR_Tools/bin/new_tmp_script bash "My helper" [--exec]
+#   LR_Tools/bin/new_tmp_script py   "Probe something" [--exec]
+# Options:
+#   --exec   Make the script executable immediately
+# Env:
+#   AUTHOR, TAGS are ignored here; this is for scripts, not reports
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: $0 <bash|py> <Title> [--exec]" >&2
+  exit 2
+fi
+
+kind="$1"; shift
+TITLE="$1"; shift || true
+MAKE_EXEC=false
+if [[ "${1:-}" == "--exec" ]]; then
+  MAKE_EXEC=true
+fi
+
+case "$kind" in
+  bash|sh) ext="sh"; shebang='#!/usr/bin/env bash' ;;
+  py|python) ext="py"; shebang='#!/usr/bin/env python3' ;;
+  *) echo "Unknown kind: $kind (expected bash|py)" >&2; exit 2 ;;
+esac
+
+mkdir -p scripts/tmp
+# Timestamp with seconds for uniqueness
+TS=$(date +%Y%m%d-%H%M%S)
+# Sanitize title to safe filename
+BASE=$(echo "$TITLE" | sed 's/[^A-Za-z0-9_-]/_/g')
+F="scripts/tmp/${BASE}_${TS}.${ext}"
+
+if [[ -e "$F" ]]; then
+  echo "Refusing to overwrite existing file: $F" >&2
+  exit 3
+fi
+
+cat > "$F" <<EOF
+${shebang}
+set -euo pipefail
+# title: ${TITLE}
+# created: $(date -Iseconds)
+# author: ${USER:-unknown}
+
+EOF
+
+if [[ "$ext" == "py" ]]; then
+  cat >> "$F" <<'EOF'
+import sys
+from datetime import datetime
+
+def main() -> int:
+    print(f"[tmp] started at {datetime.now().isoformat()}")
+    # TODO: implement
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+EOF
+else
+  cat >> "$F" <<'EOF'
+echo "[tmp] started at $(date -Iseconds)"
+# TODO: implement
+EOF
+fi
+
+if $MAKE_EXEC; then
+  chmod +x "$F"
+fi
+
+echo "$F"
